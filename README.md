@@ -86,7 +86,10 @@ a plugin has no way to read it. The volume slider above is the stand-in.
 
 ## Audio
 
-The WAVs aren't in the repo. Convert your own from whatever source you have:
+`audio/blind_rage.wav` ships with the plugin. `audio/blind_rage_bass.wav` is the optional bass-heavy
+mix; if it is present players get a "Bass" tick box to switch to it.
+
+To use a different track:
 
 ```powershell
 ffmpeg -i "your-track.mp3" -vn -ac 1 -ar 48000 -c:a pcm_s16le audio\blind_rage.wav
