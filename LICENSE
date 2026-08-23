@@ -19,3 +19,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+---
+
+Scope
+
+The MIT licence above applies to the source code in this repository.
+
+It does not apply to the audio files in audio/. Those tracks are from
+SCP: Secret Laboratory and remain the property of Northwood Studios. They are
+included here for convenience and are not licensed for redistribution under
+the terms above.
+
+This plugin links against LabAPI, which Northwood Studios licenses under the
+GNU Lesser General Public License version 3. Linking imposes no licensing
+requirement on this project.
