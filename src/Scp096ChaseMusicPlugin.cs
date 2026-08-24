@@ -47,20 +47,20 @@ namespace Scp096ChaseMusic
         {
             if (!Config.IsEnabled)
             {
-                Logger.Info(LogPrefix + "Disabled in config, doing nothing.");
+                Logger.Info(LogPrefix + "Disabled in config.");
                 return;
             }
 
             if (!TryParseVariant(Config.Variant, out ChaseVariant variant))
             {
-                Logger.Error(LogPrefix + "'" + Config.Variant + "' is not a valid variant. Use 'NonTarget' or 'Target'.");
+                Logger.Error(LogPrefix + Config.Variant + " is not a valid variant. Use NonTarget or Target.");
                 return;
             }
 
             string audioPath = ResolveAudioPath(out List<string> searched);
             if (audioPath == null)
             {
-                Logger.Error(LogPrefix + "Could not find the audio file '" + Config.AudioFile + "'. Looked in:");
+                Logger.Error(LogPrefix + "Cannot find " + Config.AudioFile + ". Looked in:");
                 foreach (string candidate in searched)
                     Logger.Error(LogPrefix + "  " + candidate);
 
@@ -70,7 +70,7 @@ namespace Scp096ChaseMusic
             _library = ChaseMusicLibrary.TryLoad(audioPath, variant, Config.Timeline, out string error);
             if (_library == null)
             {
-                Logger.Error(LogPrefix + "Could not load the chase music: " + error);
+                Logger.Error(LogPrefix + "Could not read the audio: " + error);
                 return;
             }
 
@@ -84,8 +84,8 @@ namespace Scp096ChaseMusic
                 ChaseMusicSettings.Register(Config.VolumeSliderId, Config.VolumeSliderDefaultPercent,
                     _bassLibrary != null, Config.BassToggleId, Config.BassOnByDefault);
 
-                Logger.Info(LogPrefix + "Server-specific settings: chase music volume" +
-                            (_bassLibrary != null ? " and a Bass tick box." : "."));
+                Logger.Info(LogPrefix + "Player settings registered: volume" +
+                            (_bassLibrary != null ? " and Bass." : "."));
             }
 
             Logger.Info(LogPrefix + "Loaded " + Path.GetFileName(audioPath) + " (" + variant + " mix): " + _library.Describe() + ".");
@@ -154,7 +154,7 @@ namespace Scp096ChaseMusic
                 {
                     if (!TryAllocateControllerId(out byte controllerId))
                     {
-                        Logger.Warn(LogPrefix + "Ran out of speaker controller ids; no music for " + player.Nickname + ".");
+                        Logger.Warn(LogPrefix + "Out of speaker ids, no music for " + player.Nickname + ".");
                         continue;
                     }
 
@@ -183,7 +183,7 @@ namespace Scp096ChaseMusic
             string path = ResolveAudioPath(Config.BassAudioFile, out _);
             if (path == null)
             {
-                Logger.Info(LogPrefix + "No bass mix found (" + Config.BassAudioFile + "), so the Bass option is hidden.");
+                Logger.Info(LogPrefix + "No bass mix at " + Config.BassAudioFile + ", hiding the Bass option.");
                 return null;
             }
 

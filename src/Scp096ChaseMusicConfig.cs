@@ -6,101 +6,97 @@ namespace Scp096ChaseMusic
     // Laboratory\LabAPI\configs\<port>\Scp096ChaseMusic\config.yml.
     public class Scp096ChaseMusicConfig
     {
-        [Description("Set to false to disable the plugin without removing it.")]
+        [Description("Set to false to turn the plugin off without removing it.")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Audio file to stream. Must be a WAV (PCM 16/24/32-bit or 32-bit float) at 48000 Hz. " +
-                     "A relative name is looked up next to the plugin DLL and in the plugin's config folders.")]
+        [Description("WAV to play. Must be 48000 Hz. Looked for next to the DLL, then in the config folders.")]
         public string AudioFile { get; set; } = "blind_rage.wav";
 
-        [Description("Which mix SCP-096 hears: 'NonTarget' (what a bystander hears) or 'Target' (what someone " +
-                     "096 is hunting hears). SCP-096 is never their own target, so 'NonTarget' is the faithful choice.")]
+        [Description("Which mix to use: NonTarget or Target. 096 is never their own target, so NonTarget " +
+                     "is what a bystander would hear.")]
         public string Variant { get; set; } = "NonTarget";
 
-        [Description("Playback volume for SCP-096, 0.0 - 5.0. 1.0 plays the file at its own level. This is a " +
-                     "client side multiplier applied after decoding, so raising it never distorts the stream.")]
+        [Description("Volume for SCP-096. 1.0 is the file's own level.")]
         // decimal, not float: YamlDotNet writes floats and doubles back out with their binary rounding error, so
         // a hand-edited 'volume: 0.7' would be rewritten as 0.69999999988 the next time the config is saved.
         public decimal Volume { get; set; } = 1.0m;
 
-        [Description("Only play the docile/encounter section once SCP-096 has at least one target. " +
-                     "Set to false to loop the docile section for the whole round.")]
+        [Description("Wait for 096 to have a target before starting the music. False loops the docile " +
+                     "section all round.")]
         public bool DocileRequiresTargets { get; set; } = true;
 
-        [Description("Let the 'calming down' section play out in full even after SCP-096 has returned to the " +
-                     "docile state (the state lasts 5s, the music tail is longer).")]
+        [Description("Let the calm-down finish even after 096 is docile again. The state only lasts 5s, " +
+                     "the music runs longer.")]
         public bool PlayCalmingTailInFull { get; set; } = true;
 
-        [Description("Seconds to fade the music in when a chase starts. 0 starts it at full volume.")]
+        [Description("Fade-in time when a chase starts. 0 for no fade.")]
         public decimal FadeInSeconds { get; set; } = 1.5m;
 
-        [Description("Seconds to fade the music out when a chase ends, SCP-096 dies, or the round restarts.")]
+        [Description("Fade-out time when a chase ends, 096 dies, or the round restarts.")]
         public decimal FadeOutSeconds { get; set; } = 2.0m;
 
-        [Description("Bass-heavy alternative mix, offered to players as a \"Bass\" tick box. " +
-                     "Leave the filename blank, or delete the file, to hide the option.")]
+        [Description("Second mix, offered to players as a Bass tick box. Blank or missing hides the option.")]
         public string BassAudioFile { get; set; } = "blind_rage_bass.wav";
 
-        [Description("Whether the Bass tick box starts ticked for players who have not chosen.")]
+        [Description("Whether Bass starts ticked for players who have not chosen.")]
         public bool BassOnByDefault { get; set; } = false;
 
-        [Description("Id for the Bass tick box. Only change it if another plugin on this server already uses it.")]
+        [Description("Setting id for the Bass tick box. Change it only if another plugin uses the same one.")]
         public int BassToggleId { get; set; } = 96002;
 
-        [Description("Show each player a 'Chase music volume' slider in their server-specific settings tab. " +
-                     "The game's own Chase Themes slider is a local client setting the server cannot read, so this " +
-                     "is how a player adjusts their own chase music.")]
+        [Description("Give players a volume slider in their server-specific settings. The game's own Chase " +
+                     "Themes slider never reaches the server, so this is the only way they can adjust it.")]
         public bool ShowVolumeSlider { get; set; } = true;
 
-        [Description("Where that slider starts, 0 - 100. It scales the volume above, so 100 means the volume set here.")]
+        [Description("Where that slider starts, 0 - 100. It scales the volume above.")]
         public int VolumeSliderDefaultPercent { get; set; } = 100;
 
-        [Description("Id for the volume slider. Only change it if another plugin on this server already uses it.")]
+        [Description("Setting id for the volume slider. Change it only if another plugin uses the same one.")]
         public int VolumeSliderId { get; set; } = 96001;
 
-        [Description("First speaker controller id to hand out. One id is used per live SCP-096. Only change this " +
-                     "if another audio plugin on this server already claims ids in the 96-... range.")]
+        [Description("First speaker id to hand out, one per live 096. Change it only if another audio plugin " +
+                     "already uses that range.")]
         public byte ControllerIdBase { get; set; } = 96;
 
-        [Description("How often (seconds) SCP-096's rage state is polled. Lower reacts faster, costs slightly more.")]
+        [Description("How often to check 096's rage state, in seconds. Lower reacts faster and costs a little more.")]
         public decimal TickInterval { get; set; } = 0.05m;
 
-        [Description("Log every music section change to the server console.")]
+        [Description("Print every section change to the console.")]
         public bool VerboseLogging { get; set; } = false;
 
-        [Description("Section start times inside the audio file. Each section runs until the next one begins. " +
-                     "Accepts 'm:ss', 'm:ss.fff', 'h:mm:ss' or plain seconds.")]
+        [Description("Where each section starts. A section runs until the next one begins. " +
+                     "Takes m:ss, m:ss.fff, h:mm:ss or seconds.")]
         public ChaseTimelineConfig Timeline { get; set; } = new ChaseTimelineConfig();
     }
 
     // Marker list for "Blind Rage". Defaults are the shipped track's section boundaries.
     public class ChaseTimelineConfig
     {
-        [Description("Encounter (Docile) | Chase (Docile), non-target mix.")]
+        [Description("Encounter and docile chase, non-target mix.")]
         public string NonTargetDocile { get; set; } = "0:00";
 
         [Description("Enrage build-up, non-target mix.")]
         public string NonTargetEnrageBuildUp { get; set; } = "0:48";
 
-        [Description("Chase (Enraged), non-target mix. Loops for as long as SCP-096 stays enraged.")]
+        [Description("Enraged chase, non-target mix. Loops while 096 stays enraged.")]
         public string NonTargetChaseEnraged { get; set; } = "0:54";
 
-        [Description("Calming down, non-target mix.")]
+        [Description("Calm-down, non-target mix.")]
         public string NonTargetCalmingDown { get; set; } = "1:50";
 
-        [Description("Face seen | Chase (Docile), target mix.")]
+        [Description("Face seen and docile chase, target mix.")]
         public string TargetDocile { get; set; } = "1:59";
 
         [Description("Enrage build-up, target mix.")]
         public string TargetEnrageBuildUp { get; set; } = "2:38";
 
-        [Description("Chase (Enraged), target mix. Loops for as long as SCP-096 stays enraged.")]
+        [Description("Enraged chase, target mix. Loops while 096 stays enraged.")]
         public string TargetChaseEnraged { get; set; } = "2:44";
 
-        [Description("Calming down, target mix.")]
+        [Description("Calm-down, target mix.")]
         public string TargetCalmingDown { get; set; } = "3:40";
 
-        [Description("Where the last section ends. Leave empty to run to the end of the file.")]
+        [Description("Where the last section ends. Leave blank to run to the end of the file.")]
         public string End { get; set; } = string.Empty;
     }
 }

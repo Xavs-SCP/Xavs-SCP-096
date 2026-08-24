@@ -328,8 +328,7 @@ namespace Scp096ChaseMusic
             }
             catch (Exception ex)
             {
-                LabApi.Features.Console.Logger.Error("[Scp096ChaseMusic] Failed to spawn the speaker for " +
-                                                     _nickname + ": " + ex);
+                LabApi.Features.Console.Logger.Error("[Scp096ChaseMusic] Could not spawn a speaker for " + _nickname + ": " + ex);
                 _speaker = null;
                 return false;
             }

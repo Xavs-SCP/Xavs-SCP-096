@@ -48,9 +48,7 @@ namespace Scp096ChaseMusic
                 integer: true,
                 valueToStringFormat: "0",
                 finalDisplayFormat: "{0}%",
-                hint: "How loud your own chase music is while you are SCP-096. Only affects you. " +
-                      "100% is the intended level; the track is mastered close to the ceiling, so much " +
-                      "above that will clip.");
+                hint: "How loud your chase music is as SCP-096. Only affects you. Above 100% may distort.");
 
             var entries = new List<ServerSpecificSettingBase> { _header, _volume };
 
@@ -62,7 +60,7 @@ namespace Scp096ChaseMusic
                     "Off",
                     "On",
                     bassByDefault,
-                    "Swaps to the bass-heavy mix of the chase music. Takes effect at the next section.");
+                    "Use the bass-heavy mix. Changes over at the next section.");
 
                 entries.Add(_bass);
             }
